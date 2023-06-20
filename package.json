@@ -1,0 +1,19 @@
+{
+  "name": "singularity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "ts-node ./main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bedrock-packet-types": "github:SkyLake-git/bedrock-packet-types",
+    "bedrock-protocol": "^3.29.0",
+    "ffi-napi": "^4.0.3",
+    "vec3": "^0.1.8"
+  }
+}
