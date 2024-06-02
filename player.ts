@@ -5,6 +5,7 @@ import {ModuleFlight} from "./module/flight";
 import {EntityProcessor, MovementProcessor} from "./processor";
 import {TypeVec3} from "./math";
 import {ModuleAura} from "./module/aura";
+import {PlayerEntity} from "./model";
 
 
 export type RelayPlayer = Connection & {
@@ -101,6 +102,7 @@ export class SingularityUser {
 					}
 				]
 			}
+
 			if (packet.name == 'start_game') {
 				// @ts-ignore
 				this.movementProcessor.handleStartGame(packet.params)
@@ -115,8 +117,23 @@ export class SingularityUser {
 				this.entityProcessor.handleAddEntity(packet.params)
 			}
 
+			if (packet.name == 'add_player') {
+				this.entityProcessor.handleAddPlayer(packet.params)
+			}
+
 			if (packet.name == 'move_entity') {
 				this.entityProcessor.handleMoveEntity(packet.params)
+
+				//@ts-ignore
+				const entity = this.entityProcessor.getMap().get(packet.params.runtime_entity_id)
+
+				if (entity instanceof PlayerEntity) {
+					this.packetShortcut.text("system", "Singularity", `Player ${entity.getUsername()} is now at ${entity.getPosition().x}, ${entity.getPosition().y}, ${entity.getPosition().z}`)
+				}
+			}
+
+			if (packet.name == "move_entity_delta") {
+				this.entityProcessor.handleMoveEntityDelta(packet.params)
 			}
 
 			if (packet.name == 'set_entity_motion') {

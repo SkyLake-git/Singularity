@@ -15,7 +15,7 @@ export class ModuleAura extends BaseModule {
 	onEnable() {
 		super.onEnable();
 
-		this.range = 3
+		this.range = 5
 	}
 
 	getName(): string {
@@ -66,19 +66,6 @@ export class ModuleAura extends BaseModule {
 		params.yaw = angle.yaw
 		params.pitch = angle.pitch
 		params.head_yaw = angle.yaw
-
-		params.position.x += params.delta.x
-		params.position.z += params.delta.z
-
-		this.manager.getUser().getPacketShortcut().move_player(
-			params.position,
-			params.pitch,
-			params.yaw,
-			params.head_yaw,
-			'teleport',
-			true,
-			this.manager.getUser().getMovementProcessor().getTick()
-		)
 	}
 
 }

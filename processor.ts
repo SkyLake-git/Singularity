@@ -1,7 +1,7 @@
 import {PlayerAuthInputParams} from "bedrock-packet-types/params/player_auth_input";
 import {StartGameParams} from "bedrock-packet-types/params/start_game";
 import {cloneVec, createZeroVec, TypeVec3} from "./math";
-import {Entity} from "./model";
+import {Entity, PlayerEntity} from "./model";
 
 export class EntityProcessor {
 
@@ -15,6 +15,21 @@ export class EntityProcessor {
 		const runtimeId = packet.runtime_id
 
 		const entity = new Entity(runtimeId, packet.entity_type)
+
+		this.map.set(runtimeId, entity)
+
+		entity.position = packet.position
+		entity.motion = packet.velocity
+		entity.pitch = packet.pitch
+		entity.yaw = packet.yaw
+		entity.headYaw = packet.head_yaw
+		entity.metadataDictionary = packet.metadata
+	}
+
+	handleAddPlayer(packet: any): void {
+		const runtimeId = packet.runtime_id
+
+		const entity = new PlayerEntity(runtimeId, packet.entity_type, packet.username)
 
 		this.map.set(runtimeId, entity)
 
@@ -40,6 +55,33 @@ export class EntityProcessor {
 			entity.yaw = packet.rotation.yaw
 			entity.pitch = packet.rotation.pitch
 			entity.headYaw = packet.rotation.head_yaw
+		}
+	}
+
+	handleMoveEntityDelta(packet: any): void {
+		const entity = this.map.get(packet.runtime_entity_id) ?? null
+
+		if (entity !== null) {
+			if (packet.x) {
+				entity.position.x += packet.x
+			}
+
+			if (packet.y) {
+				entity.position.y += packet.y
+			}
+
+			if (packet.z) {
+				entity.position.z += packet.z
+			}
+
+			if (packet.rot_x) {
+				entity.yaw = packet.rot_x
+				entity.headYaw = packet.rot_x
+			}
+
+			if (packet.rot_y) {
+				entity.pitch += packet.rot_y
+			}
 		}
 	}
 

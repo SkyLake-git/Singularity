@@ -40,3 +40,18 @@ export class Entity {
 		return this.runtimeId
 	}
 }
+
+export class PlayerEntity extends Entity {
+
+	public username: string
+
+
+	constructor(runtimeId: number, entityType: number, username: string) {
+		super(runtimeId, entityType);
+		this.username = username;
+	}
+
+	getUsername(): string {
+		return this.username
+	}
+}
