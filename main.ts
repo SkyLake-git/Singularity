@@ -11,7 +11,7 @@ const fs = require('fs')
 const address = fs.readFileSync("./address", "utf-8")
 
 const ip = address.split(":")[0]
-const port = address.split(":")[0]
+const port = address.split(":")[1]
 
 const relay = new Relay({
 	host: '0.0.0.0',
